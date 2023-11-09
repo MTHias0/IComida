@@ -21,4 +21,41 @@ const createClient = async (req, res) => {
     }
 }
 
-module.exports = { createClient };
+const updateClient = async (req, res) => {
+    const { clientId, newName, newEmail, newAddress, newTelNumber } = req.body;
+  
+    try {
+      const updatedClient = await client.findOneAndUpdate(
+        { _id: clientId },
+        {
+          $set: {
+            name: newName,
+            email: newEmail,
+            address: newAddress,
+            telNumber: newTelNumber
+          },
+        },
+        { new: true }
+      );
+  
+      return res.status(200).json(updatedClient);
+    } catch (err) {
+      
+      return res.status(500).json({ error: err.message });
+    }
+  }
+  
+  const deleteClient = async (req, res) => {
+    const { clientId } = req.body;
+  
+    try {
+      const deletedClient = await client.findOneAndDelete({ _id: clientId });
+  
+      return res.json({ mesage: `restaurante ${deletedClient.name} deletado` });
+    } catch (err) {
+  
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+module.exports = { createClient, deleteClient, updateClient };

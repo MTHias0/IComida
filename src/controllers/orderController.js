@@ -1,3 +1,4 @@
+const { query } = require('express');
 const order = require('../models/order');
 
 const createOrder = async (req, res) => {
@@ -20,4 +21,19 @@ const createOrder = async (req, res) => {
 
 }
 
-module.exports = { createOrder };
+const listOrders = async (req, res) => {
+    const { clientId, restaurantId } = req.query;
+
+    try {
+        let query = clientId ? { clientId } : restaurantId ? { restaurantId } : {};
+        
+        const orders = await order.find(query);
+
+        return res.status(200).json(orders);
+    } catch (err) {
+
+        return res.status(500).json({ err: message.error });
+    }
+}
+
+module.exports = { createOrder, listOrders };
