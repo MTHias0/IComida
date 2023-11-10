@@ -23,7 +23,7 @@ router.post("/add-item", addMenuItem);
 router.delete("/remove-item", deleteMenuItem);
 router.get("/menu", getItems);
 //
-router.post("restaurant-login", loginAsRestaurant);
+router.post("/restaurant-login", loginAsRestaurant);
 router.get("/list-restaurants", getAllRestaurants);
 router.get("/restaurant", getRestaurantByid);
 router.put("/update-restaurant", updateRestaurant)

@@ -3,12 +3,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const createRestaurant = async (req, res) => {
-    const { name, email, address, telNumber, menu} = req.body;
+    const { name, email, password, address, telNumber, menu} = req.body;
 
     try{
         const response = await restaurant.create({
             name: name,
             email: email,
+            password: password,
             address: address,
             telNumber: telNumber,
             menu: menu
@@ -28,22 +29,15 @@ const loginAsRestaurant = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const restaurant = await restaurant.findOne({ email });
+    const loggedRestaurant = await restaurant.findOne({ email });
 
-    const isPasswordValid = await bcrypt.compare(password, restaurant.password);
-
-    if(!isPasswordValid) {
-
-      return res.status(401).json({ message: 'Email ou senha inválidos'});
-    }
-
-    const token = jwt.sign({ restaurantId: restaurant._id }, 'your-secret-key', { expiresIn: '1h'});
+    const token = jwt.sign({ restaurantId: loggedRestaurant._id }, 'your-secret-key', { expiresIn: '1h'});
     
     return res.json({ token });
 
   } catch (err) {
     
-    return res.stauts(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 }
 
