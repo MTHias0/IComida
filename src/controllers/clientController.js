@@ -20,6 +20,16 @@ const createClient = async (req, res) => {
 
     }
 }
+const getAllClients = async (req, res) => {
+  try {
+    const clients = await client.find();
+
+    return res.status(200).json(clients);
+  } catch (err) {
+
+    return res.status(404).json({ message: "Nenhum cliente encontrado" });
+  }
+}
 
 const updateClient = async (req, res) => {
     const { clientId, newName, newEmail, newAddress, newTelNumber } = req.body;
@@ -58,4 +68,4 @@ const updateClient = async (req, res) => {
     }
   }
 
-module.exports = { createClient, deleteClient, updateClient };
+module.exports = { createClient, deleteClient, updateClient,getAllClients };
