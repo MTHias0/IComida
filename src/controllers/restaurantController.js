@@ -31,6 +31,13 @@ const loginAsRestaurant = async (req, res) => {
   try {
     const loggedRestaurant = await restaurant.findOne({ email });
 
+   const isPasswordValid = password === loggedRestaurant.password;
+
+    if(!isPasswordValid) {
+
+      return res.status(401).json({ message: 'Email ou senha inválidos'});
+    }
+
     const token = jwt.sign({ restaurantId: loggedRestaurant._id }, 'your-secret-key', { expiresIn: '1h'});
     
     return res.json({ token });
